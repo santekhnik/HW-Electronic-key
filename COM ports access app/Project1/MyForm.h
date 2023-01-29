@@ -9,7 +9,14 @@ namespace Project1 {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace System::IO::Ports;
+	using namespace System::Runtime::InteropServices;
+	using namespace System::Data::SqlClient;
+	using namespace System::IO;
 
+	/////////////////////////
+	
+	
+	
 	/// <summary>
 	/// Summary for MyForm
 	/// </summary>
@@ -51,9 +58,11 @@ namespace Project1 {
 	private: System::IO::Ports::SerialPort^ serialPort1;
 	private: System::Windows::Forms::Button^ button5;
 	private: System::Windows::Forms::Label^ label4;
-	private: System::Windows::Forms::Button^ button6;
+
 	private: System::Windows::Forms::Button^ button7;
 	private: System::Windows::Forms::Button^ button8;
+	private: System::Windows::Forms::Label^ label5;
+	private: System::Windows::Forms::TextBox^ textBox3;
 
 	private: System::ComponentModel::IContainer^ components;
 	protected:
@@ -87,9 +96,10 @@ namespace Project1 {
 			this->serialPort1 = (gcnew System::IO::Ports::SerialPort(this->components));
 			this->button5 = (gcnew System::Windows::Forms::Button());
 			this->label4 = (gcnew System::Windows::Forms::Label());
-			this->button6 = (gcnew System::Windows::Forms::Button());
 			this->button7 = (gcnew System::Windows::Forms::Button());
 			this->button8 = (gcnew System::Windows::Forms::Button());
+			this->label5 = (gcnew System::Windows::Forms::Label());
+			this->textBox3 = (gcnew System::Windows::Forms::TextBox());
 			this->SuspendLayout();
 			// 
 			// comboBox1
@@ -241,50 +251,59 @@ namespace Project1 {
 			this->label4->TabIndex = 13;
 			this->label4->Text = L"Test button";
 			// 
-			// button6
-			// 
-			this->button6->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->button6->Location = System::Drawing::Point(12, 197);
-			this->button6->Margin = System::Windows::Forms::Padding(2);
-			this->button6->Name = L"button6";
-			this->button6->Size = System::Drawing::Size(58, 33);
-			this->button6->TabIndex = 14;
-			this->button6->Text = L"Add key";
-			this->button6->UseVisualStyleBackColor = true;
-			// 
 			// button7
 			// 
 			this->button7->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->button7->Location = System::Drawing::Point(74, 197);
+			this->button7->Location = System::Drawing::Point(184, 254);
 			this->button7->Margin = System::Windows::Forms::Padding(2);
 			this->button7->Name = L"button7";
 			this->button7->Size = System::Drawing::Size(99, 33);
 			this->button7->TabIndex = 15;
-			this->button7->Text = L"Delete key";
+			this->button7->Text = L"Cancel";
 			this->button7->UseVisualStyleBackColor = true;
+			this->button7->Click += gcnew System::EventHandler(this, &MyForm::button7_Click);
 			// 
 			// button8
 			// 
 			this->button8->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->button8->Location = System::Drawing::Point(177, 197);
+			this->button8->Location = System::Drawing::Point(287, 254);
 			this->button8->Margin = System::Windows::Forms::Padding(2);
 			this->button8->Name = L"button8";
 			this->button8->Size = System::Drawing::Size(99, 33);
 			this->button8->TabIndex = 16;
-			this->button8->Text = L"Reset";
+			this->button8->Text = L"Reset key";
 			this->button8->UseVisualStyleBackColor = true;
+			this->button8->Click += gcnew System::EventHandler(this, &MyForm::button8_Click);
+			// 
+			// label5
+			// 
+			this->label5->AutoSize = true;
+			this->label5->Location = System::Drawing::Point(13, 237);
+			this->label5->Name = L"label5";
+			this->label5->Size = System::Drawing::Size(94, 13);
+			this->label5->TabIndex = 17;
+			this->label5->Text = L"Keys management";
+			// 
+			// textBox3
+			// 
+			this->textBox3->Location = System::Drawing::Point(122, 230);
+			this->textBox3->Margin = System::Windows::Forms::Padding(2);
+			this->textBox3->Name = L"textBox3";
+			this->textBox3->Size = System::Drawing::Size(278, 20);
+			this->textBox3->TabIndex = 18;
+			this->textBox3->Text = L"Enter key";
 			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(407, 239);
+			this->ClientSize = System::Drawing::Size(407, 299);
+			this->Controls->Add(this->textBox3);
+			this->Controls->Add(this->label5);
 			this->Controls->Add(this->button8);
 			this->Controls->Add(this->button7);
-			this->Controls->Add(this->button6);
 			this->Controls->Add(this->label4);
 			this->Controls->Add(this->button5);
 			this->Controls->Add(this->label3);
@@ -304,7 +323,17 @@ namespace Project1 {
 			this->Text = L" ";
 			this->ResumeLayout(false);
 			this->PerformLayout();
-
+			String^ sr = "D:\\cpp\\keys.txt";
+			StreamReader^ file;
+			File^ temp;
+			if (temp->Exists("D:\\cpp\\keys.txt")) {
+				file = File::OpenText(sr);
+				textBox3->Text = file->ReadToEnd();
+				file->Close();
+			}
+			else {
+				textBox3->Text = "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00";
+			}
 		}
 #pragma endregion
 
@@ -446,6 +475,44 @@ private: System::Void comboBox2_SelectedIndexChanged(System::Object^ sender, Sys
 		baudRate = 9600;
 	} 
 	
+}
+	   
+
+/*
+private: System::Void button6_Click(System::Object^ sender, System::EventArgs^ e) {
+	//TextBox textBox3;
+	//textBox3.Text;
+		StreamWriter^ sw = gcnew StreamWriter("D:\\cpp\\keys.txt", true);
+		sw->Write(textBox3->Text);
+		sw->Close();
+
+} */
+private: System::Void button7_Click(System::Object^ sender, System::EventArgs^ e) {
+	String^ sr = "D:\\cpp\\keys.txt";
+	StreamReader^ file;
+	File^ temp;
+	if (temp->Exists("D:\\cpp\\keys.txt")) {
+		file = File::OpenText(sr);
+		textBox3->Text = file->ReadToEnd();
+		file->Close();
+	}
+	else {
+		textBox3->Text = "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00";
+	}
+	
+	/*fin.open("example.txt");
+	ofstream temp;
+	temp.open("temp.txt");
+	cout << "Which line do you want to remove? ";
+	cin >> deleteline; */
+}
+private: System::Void button8_Click(System::Object^ sender, System::EventArgs^ e) {
+	String^ sr = "D:\\cpp\\keys.txt";
+	File^ file;
+	file->Delete("D:\\cpp\\keys.txt");
+	StreamWriter^ sw = gcnew StreamWriter("D:\\cpp\\keys.txt", true);
+	sw->Write(textBox3->Text);
+	sw->Close();
 }
 };
 }
