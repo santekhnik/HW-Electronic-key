@@ -127,17 +127,15 @@ int main(void)
         command_number = 0x00;
         }
 	
-    if ((command_number == 0x02) && (RX1_Char[1] == 1) && (RX1_Char[2] == 1) && (RX1_Char[3] == 1) && (RX1_Char[4] == 1))	
+    if ((command_number == 0x02) && (RX1_Char[1] != 0))	
 			  {
 			   HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_9);
-				 HAL_UART_Transmit_IT(&huart2, MSG_set_key_number, sizeof(MSG_set_key_number));
-					
-				 HAL_UART_Receive_IT(&huart2, RX_set_key_man, 4);
-					
-				 MSG_cmd_get_key_number[1] = RX_set_key_man[0];
-         MSG_cmd_get_key_number[2] = RX_set_key_man[1];
-         MSG_cmd_get_key_number[3] = RX_set_key_man[2];
-         MSG_cmd_get_key_number[4] = RX_set_key_man[3];
+				 //HAL_UART_Transmit_IT(&huart2, MSG_set_key_number, sizeof(MSG_set_key_number));
+								
+				 MSG_cmd_get_key_number[2] = RX1_Char[1];
+         MSG_cmd_get_key_number[3] = RX1_Char[2];
+         MSG_cmd_get_key_number[4] = RX1_Char[3];
+         MSG_cmd_get_key_number[5] = RX1_Char[4];
 				
          HAL_UART_Transmit_IT(&huart2, MSG_cmd_get_key_number, sizeof(MSG_cmd_get_key_number));
 				 HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_9);
