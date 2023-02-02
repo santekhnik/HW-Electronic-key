@@ -1,0 +1,25 @@
+--cpu Cortex-M0
+"crc_calculation\startup_stm32f051x8.o"
+"crc_calculation\main.o"
+"crc_calculation\stm32f0xx_it.o"
+"crc_calculation\stm32f0xx_hal_msp.o"
+"crc_calculation\stm32f0xx_hal_tim.o"
+"crc_calculation\stm32f0xx_hal_tim_ex.o"
+"crc_calculation\stm32f0xx_hal_rcc.o"
+"crc_calculation\stm32f0xx_hal_rcc_ex.o"
+"crc_calculation\stm32f0xx_hal.o"
+"crc_calculation\stm32f0xx_hal_i2c.o"
+"crc_calculation\stm32f0xx_hal_i2c_ex.o"
+"crc_calculation\stm32f0xx_hal_gpio.o"
+"crc_calculation\stm32f0xx_hal_dma.o"
+"crc_calculation\stm32f0xx_hal_cortex.o"
+"crc_calculation\stm32f0xx_hal_pwr.o"
+"crc_calculation\stm32f0xx_hal_pwr_ex.o"
+"crc_calculation\stm32f0xx_hal_flash.o"
+"crc_calculation\stm32f0xx_hal_flash_ex.o"
+"crc_calculation\stm32f0xx_hal_exti.o"
+"crc_calculation\system_stm32f0xx.o"
+--strict --scatter "CRC_Calculation\CRC_Calculation.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "CRC_Calculation.map" -o CRC_Calculation\CRC_Calculation.axf
