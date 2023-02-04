@@ -1,5 +1,6 @@
 #pragma once
-
+void hello();
+void key_update(string key);
 namespace Project1 {
 	
 	using namespace System;
@@ -63,6 +64,7 @@ namespace Project1 {
 	private: System::Windows::Forms::Button^ button8;
 	private: System::Windows::Forms::Label^ label5;
 	private: System::Windows::Forms::TextBox^ textBox3;
+	private: System::Windows::Forms::Button^ button6;
 
 	private: System::ComponentModel::IContainer^ components;
 	protected:
@@ -100,6 +102,7 @@ namespace Project1 {
 			this->button8 = (gcnew System::Windows::Forms::Button());
 			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->textBox3 = (gcnew System::Windows::Forms::TextBox());
+			this->button6 = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// comboBox1
@@ -255,10 +258,10 @@ namespace Project1 {
 			// 
 			this->button7->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->button7->Location = System::Drawing::Point(184, 254);
+			this->button7->Location = System::Drawing::Point(253, 254);
 			this->button7->Margin = System::Windows::Forms::Padding(2);
 			this->button7->Name = L"button7";
-			this->button7->Size = System::Drawing::Size(99, 33);
+			this->button7->Size = System::Drawing::Size(69, 33);
 			this->button7->TabIndex = 15;
 			this->button7->Text = L"Cancel";
 			this->button7->UseVisualStyleBackColor = true;
@@ -268,10 +271,10 @@ namespace Project1 {
 			// 
 			this->button8->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->button8->Location = System::Drawing::Point(287, 254);
+			this->button8->Location = System::Drawing::Point(327, 255);
 			this->button8->Margin = System::Windows::Forms::Padding(2);
 			this->button8->Name = L"button8";
-			this->button8->Size = System::Drawing::Size(99, 33);
+			this->button8->Size = System::Drawing::Size(73, 33);
 			this->button8->TabIndex = 16;
 			this->button8->Text = L"Reset key";
 			this->button8->UseVisualStyleBackColor = true;
@@ -295,11 +298,25 @@ namespace Project1 {
 			this->textBox3->TabIndex = 18;
 			this->textBox3->Text = L"Enter key";
 			// 
+			// button6
+			// 
+			this->button6->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->button6->Location = System::Drawing::Point(122, 254);
+			this->button6->Margin = System::Windows::Forms::Padding(2);
+			this->button6->Name = L"button6";
+			this->button6->Size = System::Drawing::Size(83, 33);
+			this->button6->TabIndex = 19;
+			this->button6->Text = L"Update";
+			this->button6->UseVisualStyleBackColor = true;
+			this->button6->Click += gcnew System::EventHandler(this, &MyForm::button6_Click);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(407, 299);
+			this->Controls->Add(this->button6);
 			this->Controls->Add(this->textBox3);
 			this->Controls->Add(this->label5);
 			this->Controls->Add(this->button8);
@@ -323,21 +340,11 @@ namespace Project1 {
 			this->Text = L" ";
 			this->ResumeLayout(false);
 			this->PerformLayout();
-			String^ sr = "D:\\cpp\\keys.txt";
-			StreamReader^ file;
-			File^ temp;
-			if (temp->Exists("D:\\cpp\\keys.txt")) {
-				file = File::OpenText(sr);
-				textBox3->Text = file->ReadToEnd();
-				file->Close();
-			}
-			else {
-				textBox3->Text = "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00";
-			}
+
 		}
 #pragma endregion
 
-
+		
 		// Find available Ports --------------------------------------
 	private: void findPorts(void)
 	{
@@ -507,12 +514,16 @@ private: System::Void button7_Click(System::Object^ sender, System::EventArgs^ e
 	cin >> deleteline; */
 }
 private: System::Void button8_Click(System::Object^ sender, System::EventArgs^ e) {
+	hello();
 	String^ sr = "D:\\cpp\\keys.txt";
 	File^ file;
 	file->Delete("D:\\cpp\\keys.txt");
 	StreamWriter^ sw = gcnew StreamWriter("D:\\cpp\\keys.txt", true);
 	sw->Write(textBox3->Text);
 	sw->Close();
+}
+private: System::Void button6_Click(System::Object^ sender, System::EventArgs^ e) {
+	key_update(textBox3->Text);
 }
 };
 }
