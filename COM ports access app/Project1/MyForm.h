@@ -1,6 +1,6 @@
 #pragma once
 void hello();
-void key_update(string key);
+//void key_update(string key);
 namespace Project1 {
 	
 	using namespace System;
@@ -523,7 +523,7 @@ private: System::Void button8_Click(System::Object^ sender, System::EventArgs^ e
 	sw->Close();
 }
 private: System::Void button6_Click(System::Object^ sender, System::EventArgs^ e) {
-	key_update(textBox3->Text);
+	//key_update(textBox3->Text);
 }
 };
 }
