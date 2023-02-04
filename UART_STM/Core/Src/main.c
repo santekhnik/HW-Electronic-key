@@ -4,20 +4,26 @@
 /* Private variables ---------------------------------------------------------*/
 UART_HandleTypeDef huart2;
 
-uint8_t  RX1_Char[6]                  = {0,0,0,0,0,0};  // 0 0 0 0 0 0 0 0
-uint8_t  RX_set_key_man[4]            = {0,0,0,0};  // 0 0 0 0
+uint8_t   RX1_Char[6]                  = {0,0,0,0,0,0};  // 0 0 0 0 0 0 0 0
+uint8_t   check_sum;
+
+int       i;
+
+
 
 
 //---------[  COMMAND LIST    ]---------
-uint8_t  cmd_check_key_connection[6]  = {1,0,0,0,1,0};  // 1 0 0 0 1 0 (evry command ending with '1' for stop receiving data, than changed by CRC function to necessary byte value}
-uint8_t  cmd_get_key_number[6]        = {2,0,0,0,1,1};  // 2 0 0 0 1 2 
-uint8_t  cmd_get_key_id[6]            = {3,0,0,0,1,2};  // 2 0 0 0 1 2 
-uint8_t  cmd_key_confirmation[6]      = {4,0,0,0,1,3};  // 2 0 0 0 1 2 
+uint8_t   cmd_check_key_connection[6]  = {1,0,0,0,1,0};  // 1 0 0 0 1 0 (evry command ending with '1' for stop receiving data, than changed by CRC function to necessary byte value}
+uint8_t   cmd_get_key_number[6]        = {2,0,0,0,1,1};  // 2 0 0 0 1 2 
+uint8_t   cmd_get_key_id[6]            = {3,0,0,0,1,2};  // 2 0 0 0 1 2 
+uint8_t   cmd_key_confirmation[6]      = {4,0,0,0,1,3};  // 2 0 0 0 1 2 
 
 
 //---------[  FLAGS    ]---------
 uint8_t  command_number               = 0x00;
-
+uint8_t  flag_finding_command         = 0x00;
+uint8_t  flag_check_sum               = 0x01;
+ 
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
@@ -26,8 +32,6 @@ static void MX_USART2_UART_Init(void);
 void HAL_USART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
     HAL_UART_Receive_IT(&huart2, RX1_Char, 6);
-	  HAL_UART_Receive_IT(&huart2, RX_set_key_man, 4);
-
 }
 
 void HAL_USART_TxCpltCallback(UART_HandleTypeDef *huart)
@@ -52,21 +56,60 @@ void finding_command (uint8_t RX1_Char[])
       if (RX1_Char[0] == cmd_check_key_connection[0])
         {
         command_number = 0x01;
+				flag_finding_command = 0x01;
         }
       else if (RX1_Char[0] == cmd_get_key_number[0])
         {
         command_number = 0x02;
+	      flag_finding_command = 0x01;
+
         }
 			else if (RX1_Char[0] == cmd_get_key_id[0])
         {
         command_number = 0x03;
+				flag_finding_command = 0x01;					
         }
 			else if (RX1_Char[0] == cmd_key_confirmation[0])
         {
         command_number = 0x04;
+				flag_finding_command = 0x01;					
         }	
 }
 
+//---------[  Function to count CRC  ]---------
+void crc()
+{
+	check_sum = RX1_Char[0];
+	
+       for(i = 0; i < 5; i++)
+				{
+					if (RX1_Char[i] == RX1_Char[i+1])
+					{
+						check_sum = check_sum;
+					}
+					else
+					{
+						check_sum = check_sum - 1;
+					}
+				}
+		 	check_sum = check_sum + 1;
+}
+
+//---------[  Function to check for errors on the receiver side  ]---------
+void receiver()
+	{
+    crc();
+   
+        if(check_sum == RX1_Char[5])
+				{
+					flag_check_sum = 0x00;
+				}	
+        else
+				{	
+					flag_check_sum = 0x01;
+				}
+}
+	
 int main(void)
 {
   uint8_t MSG_unknown_cmd[]              = "UNKNOWN COMMAND \r\n";
@@ -84,98 +127,89 @@ int main(void)
   MX_USART2_UART_Init();
   
   HAL_UART_Receive_IT(&huart2, RX1_Char, 6);
-  
-  while (1)
-  {    
 
-    finding_command(RX1_Char);
+
+		while (1)
+		{    
+
+			finding_command(RX1_Char);
+			
+			if (flag_finding_command == 0x01)
+			{
+				receiver();
+				flag_finding_command = 0x00;
+			}
+			
+	//---------[  Command cmd_check_key_connection ]---------    
+			if (command_number == 0x01)
+					{
+					HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_8);
+					HAL_UART_Transmit_IT(&huart2, MSG_cmd_check_key_connection, sizeof(MSG_cmd_check_key_connection));
+					HAL_UART_Receive_IT(&huart2, RX1_Char, 6);
+
+					clear_recieved_data(RX1_Char);
+						
+					command_number = 0x00;
+					}
+					
+	//---------[  Command cmd_check_key_connection ]---------    				
+			if ( (command_number == 0x02)&& (RX1_Char[1] == 0) && (RX1_Char[2] == 0) && (RX1_Char[3] == 0) && (RX1_Char[4] == 1))
+					{					
+					HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_8);
+					HAL_UART_Transmit_IT(&huart2, MSG_cmd_get_key_number, sizeof(MSG_cmd_get_key_number));
+					HAL_UART_Receive_IT(&huart2, RX1_Char, 6);
+
+					clear_recieved_data(RX1_Char);
+						
+					command_number = 0x00;
+					}
 		
-/*---------[  Command UKNOWN COMMAND ]---------    
-    if (command_number == 0x99)
-        {
-        HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_8);
-        HAL_UART_Transmit_IT(&huart2, MSG_unknown_cmd, sizeof(MSG_unknown_cmd));
-        HAL_UART_Receive_IT(&huart2, RX1_Char, 6);
-
-        clear_recieved_data(RX1_Char);
-          
-        command_number = 0x00;
-        }	
-*/
-		
-//---------[  Command cmd_check_key_connection ]---------    
-    if (command_number == 0x01)
-        {
-        HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_8);
-        HAL_UART_Transmit_IT(&huart2, MSG_cmd_check_key_connection, sizeof(MSG_cmd_check_key_connection));
-        HAL_UART_Receive_IT(&huart2, RX1_Char, 6);
-
-        clear_recieved_data(RX1_Char);
-          
-        command_number = 0x00;
-        }
-				
-//---------[  Command cmd_check_key_connection ]---------    				
-    if ( (command_number == 0x02)&& (RX1_Char[1] == 0) && (RX1_Char[2] == 0) && (RX1_Char[3] == 0) && (RX1_Char[4] == 1))
-        {					
-        HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_8);
-        HAL_UART_Transmit_IT(&huart2, MSG_cmd_get_key_number, sizeof(MSG_cmd_get_key_number));
-        HAL_UART_Receive_IT(&huart2, RX1_Char, 6);
-
-        clear_recieved_data(RX1_Char);
-          
-        command_number = 0x00;
-        }
-	
-    if ((command_number == 0x02) && (RX1_Char[1] != 0))	
-			  {
-			   HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_9);
-				 //HAL_UART_Transmit_IT(&huart2, MSG_set_key_number, sizeof(MSG_set_key_number));
-								
-				 MSG_cmd_get_key_number[2] = RX1_Char[1];
-         MSG_cmd_get_key_number[3] = RX1_Char[2];
-         MSG_cmd_get_key_number[4] = RX1_Char[3];
-         MSG_cmd_get_key_number[5] = RX1_Char[4];
-				
-         HAL_UART_Transmit_IT(&huart2, MSG_cmd_get_key_number, sizeof(MSG_cmd_get_key_number));
-				 HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_9);
-	
-				 HAL_UART_Receive_IT(&huart2, RX1_Char, 6);
-				 clear_recieved_data(RX1_Char);
-          
-         command_number = 0x00;	
-
-			 }
+			if ((command_number == 0x02) && (RX1_Char[1] != 0))	
+					{
+					 HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_9);
+					 //HAL_UART_Transmit_IT(&huart2, MSG_set_key_number, sizeof(MSG_set_key_number));
 									
+					 MSG_cmd_get_key_number[2] = RX1_Char[1];
+					 MSG_cmd_get_key_number[3] = RX1_Char[2];
+					 MSG_cmd_get_key_number[4] = RX1_Char[3];
+					 MSG_cmd_get_key_number[5] = RX1_Char[4]; // test combination 020505050501  020000000101
+					
+					 HAL_UART_Transmit_IT(&huart2, MSG_cmd_get_key_number, sizeof(MSG_cmd_get_key_number));
+					 HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_9);
+		
+					 HAL_UART_Receive_IT(&huart2, RX1_Char, 6);
+					 clear_recieved_data(RX1_Char);
+						
+					 command_number = 0x00;	
+				 }
+					
+	//---------[  Command cmd_get_key_id ]---------    				
+			if (command_number == 0x03)
+					{
+					HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_8);
+					HAL_UART_Transmit_IT(&huart2, MSG_cmd_get_key_id, sizeof(MSG_cmd_get_key_id));
+					HAL_UART_Receive_IT(&huart2, RX1_Char, 6);
 
-				
-//---------[  Command cmd_get_key_id ]---------    				
-    if (command_number == 0x03)
-        {
-        HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_8);
-        HAL_UART_Transmit_IT(&huart2, MSG_cmd_get_key_id, sizeof(MSG_cmd_get_key_id));
-        HAL_UART_Receive_IT(&huart2, RX1_Char, 6);
+					clear_recieved_data(RX1_Char);
+						
+					command_number = 0x00;
+					}
+					
+	//---------[  Command cmd_get_key_id ]---------    				
+			if (command_number == 0x04)
+					{
+					HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_8);
+					HAL_UART_Transmit_IT(&huart2, MSG_cmd_key_confirmation, sizeof(MSG_cmd_key_confirmation));
+					HAL_UART_Receive_IT(&huart2, RX1_Char, 6);
 
-        clear_recieved_data(RX1_Char);
-          
-        command_number = 0x00;
-        }
-				
-//---------[  Command cmd_get_key_id ]---------    				
-    if (command_number == 0x04)
-        {
-        HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_8);
-        HAL_UART_Transmit_IT(&huart2, MSG_cmd_key_confirmation, sizeof(MSG_cmd_key_confirmation));
-        HAL_UART_Receive_IT(&huart2, RX1_Char, 6);
-
-        clear_recieved_data(RX1_Char);
-          
-        command_number = 0x00;
-        }					
-				
-     HAL_Delay(100);
-  }
-}
+					clear_recieved_data(RX1_Char);
+						
+					command_number = 0x00;
+					}					
+					
+			 HAL_Delay(100);
+		}
+	}
 /**
   * @brief System Clock Configuration
   * @retval None
