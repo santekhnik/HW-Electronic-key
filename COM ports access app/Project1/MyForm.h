@@ -1,7 +1,13 @@
 #pragma once
+ // SERIALPORT_H
+#include <string>
+using System::String;
 void hello();
+void portCommunicate(char* port, String^ data);
 //void key_update(string key);
+
 namespace Project1 {
+	
 	
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -403,6 +409,12 @@ namespace Project1 {
 		 // Send button --------------------------------------
   private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e)
   {
+	  ComboBox comboBox1;
+	  /////////////////////////
+	  portCommunicate("\\\\.\\COM3", textBox2->Text);
+
+
+	  /////////////////////////
 	  // add sender name 
 	  String^ name = this->serialPort1->PortName;
 	  // grab text and store in send buffer
@@ -525,5 +537,8 @@ private: System::Void button8_Click(System::Object^ sender, System::EventArgs^ e
 private: System::Void button6_Click(System::Object^ sender, System::EventArgs^ e) {
 	//key_update(textBox3->Text);
 }
+
+
+
 };
 }
