@@ -1,7 +1,6 @@
 #pragma once
  // SERIALPORT_H
-#include <string>
-using System::String;
+
 void hello();
 void portCommunicate(char* port);
 //void key_update(string key);
@@ -425,7 +424,7 @@ namespace Project1 {
   {
 	  ComboBox comboBox1;
 	  /////////////////////////
-	  portCommunicate("\\\\.\\COM3");
+	  portCommunicate("\\\\.\\COM6");
 
 
 	  /////////////////////////
@@ -555,7 +554,8 @@ private: System::Void button6_Click(System::Object^ sender, System::EventArgs^ e
 
 
 private: System::Void button9_Click(System::Object^ sender, System::EventArgs^ e) {
-	portCommunicate("\\\\.\\COM3");
+	portCommunicate("\\\\.\\COM6");
 }
+
 };
 }

@@ -1,3 +1,6 @@
 D:\cpp\COM ports access app\Project1\x64\Debug\Project1.vcxproj.AssemblyReference.cache
 D:\cpp\COM ports access app\Project1\x64\Debug\Project1.MyForm.resources
 D:\cpp\COM ports access app\Project1\x64\Debug\Project1.vcxproj.GenerateResource.cache
+C:\Users\Aleksandr\Documents\GitHub\HW-Electronic-key\COM ports access app\Project1\x64\Debug\Project1.vcxproj.AssemblyReference.cache
+C:\Users\Aleksandr\Documents\GitHub\HW-Electronic-key\COM ports access app\Project1\x64\Debug\Project1.MyForm.resources
+C:\Users\Aleksandr\Documents\GitHub\HW-Electronic-key\COM ports access app\Project1\x64\Debug\Project1.vcxproj.GenerateResource.cache
