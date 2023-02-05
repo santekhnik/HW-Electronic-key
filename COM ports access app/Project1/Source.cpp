@@ -45,7 +45,7 @@ void key_update(string strkey) {
 #ifndef SERIALPORT_H
 #define SERIALPORT_H
 
-#define STM_WAIT_TIME 2000
+#define STM_WAIT_TIME 0
 #define MAX_DATA_LENGTH 255
 
 #include <windows.h>
@@ -96,7 +96,7 @@ Port::Port(char* portName)
             printf("failed to get current serial parameters");
         }
         else {
-            dcbSerialParameters.BaudRate = CBR_9600;
+            dcbSerialParameters.BaudRate = 9600;
             dcbSerialParameters.ByteSize = 8;
             dcbSerialParameters.StopBits = ONESTOPBIT;
             dcbSerialParameters.Parity = NOPARITY;
@@ -176,7 +176,7 @@ void portCommunicate(char* port) {
     else {
         cout << "Error in port name" << endl << endl;
     }
-    while (stm.isConnected()) {
+    if (stm.isConnected()) {
 
     
 
