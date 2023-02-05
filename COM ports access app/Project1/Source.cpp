@@ -63,8 +63,8 @@ public:
     Port(char* portName);
     ~Port();
 
-    int readSerialPort(char* buffer, unsigned int buf_size);
-    bool writeSerialPort(char* buffer, unsigned int buf_size);
+    int readSerialPort(uint8_t buffer[], unsigned int buf_size);
+    bool writeSerialPort(uint8_t buffer[], unsigned int buf_size);
     bool isConnected();
 };
 
@@ -123,7 +123,7 @@ Port::~Port()
     }
 }
 
-int Port::readSerialPort(char* buffer, unsigned int buf_size)
+int Port::readSerialPort(uint8_t buffer[], unsigned int buf_size)
 {
     DWORD bytesRead;
     unsigned int toRead = 0;
@@ -142,7 +142,7 @@ int Port::readSerialPort(char* buffer, unsigned int buf_size)
     return 0;
 }
 
-bool Port::writeSerialPort(char* buffer, unsigned int buf_size)
+bool Port::writeSerialPort(uint8_t buffer[], unsigned int buf_size)
 {
     DWORD bytesSend;
 
@@ -160,14 +160,15 @@ bool Port::isConnected()
 ////////////////////
 
 
-char output[MAX_DATA_LENGTH];
-char incomingData[MAX_DATA_LENGTH];
+uint8_t output[MAX_DATA_LENGTH];
+uint8_t incomingData[MAX_DATA_LENGTH];
 
 // change the name of the port with the port name of your computer
 // must remember that the backslashes are essential so do not remove them
 //char* port = "\\\\.\\COM3";
 
-void portCommunicate(char* port, string data) {
+void portCommunicate(char* port) {
+    uint8_t data[] = { 01, 00, 00, 00, 01, 00 };
     Port stm(port);
     if (stm.isConnected()) {
         cout << "Connection made" << endl << endl;
@@ -177,16 +178,14 @@ void portCommunicate(char* port, string data) {
     }
     while (stm.isConnected()) {
 
-        char* charArray = new char[data.size() + 1];
-        copy(data.begin(), data.end(), charArray);
-        charArray[data.size()] = '\n';
+    
 
-        stm.writeSerialPort(charArray, MAX_DATA_LENGTH);
+        stm.writeSerialPort(data, MAX_DATA_LENGTH);
         stm.readSerialPort(output, MAX_DATA_LENGTH);
 
         cout << ">> " << output << endl;
 
-        delete[] charArray;
+       // delete[] charArray;
     }
 }
 

@@ -3,7 +3,7 @@
 #include <string>
 using System::String;
 void hello();
-void portCommunicate(char* port, String^ data);
+void portCommunicate(char* port);
 //void key_update(string key);
 
 namespace Project1 {
@@ -71,6 +71,7 @@ namespace Project1 {
 	private: System::Windows::Forms::Label^ label5;
 	private: System::Windows::Forms::TextBox^ textBox3;
 	private: System::Windows::Forms::Button^ button6;
+	private: System::Windows::Forms::Button^ button9;
 
 	private: System::ComponentModel::IContainer^ components;
 	protected:
@@ -109,6 +110,7 @@ namespace Project1 {
 			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->textBox3 = (gcnew System::Windows::Forms::TextBox());
 			this->button6 = (gcnew System::Windows::Forms::Button());
+			this->button9 = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// comboBox1
@@ -201,7 +203,7 @@ namespace Project1 {
 			// 
 			// button3
 			// 
-			this->button3->Location = System::Drawing::Point(44, 105);
+			this->button3->Location = System::Drawing::Point(51, 104);
 			this->button3->Margin = System::Windows::Forms::Padding(2);
 			this->button3->Name = L"button3";
 			this->button3->Size = System::Drawing::Size(56, 19);
@@ -317,11 +319,23 @@ namespace Project1 {
 			this->button6->UseVisualStyleBackColor = true;
 			this->button6->Click += gcnew System::EventHandler(this, &MyForm::button6_Click);
 			// 
+			// button9
+			// 
+			this->button9->Location = System::Drawing::Point(9, 178);
+			this->button9->Margin = System::Windows::Forms::Padding(2);
+			this->button9->Name = L"button9";
+			this->button9->Size = System::Drawing::Size(142, 19);
+			this->button9->TabIndex = 20;
+			this->button9->Text = L"Check connection";
+			this->button9->UseVisualStyleBackColor = true;
+			this->button9->Click += gcnew System::EventHandler(this, &MyForm::button9_Click);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(407, 299);
+			this->Controls->Add(this->button9);
 			this->Controls->Add(this->button6);
 			this->Controls->Add(this->textBox3);
 			this->Controls->Add(this->label5);
@@ -411,7 +425,7 @@ namespace Project1 {
   {
 	  ComboBox comboBox1;
 	  /////////////////////////
-	  portCommunicate("\\\\.\\COM3", textBox2->Text);
+	  portCommunicate("\\\\.\\COM3");
 
 
 	  /////////////////////////
@@ -540,5 +554,8 @@ private: System::Void button6_Click(System::Object^ sender, System::EventArgs^ e
 
 
 
+private: System::Void button9_Click(System::Object^ sender, System::EventArgs^ e) {
+	portCommunicate("\\\\.\\COM3");
+}
 };
 }
