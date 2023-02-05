@@ -142,7 +142,7 @@ int Port::readSerialPort(uint8_t buffer[], unsigned int buf_size)
     return 0;
 }
 
-bool Port::writeSerialPort(uint8_t buffer[], unsigned int buf_size)
+bool Port::writeSerialPort(unsigned char buffer[], unsigned int buf_size)
 {
     DWORD bytesSend;
 
@@ -160,15 +160,15 @@ bool Port::isConnected()
 ////////////////////
 
 
-uint8_t output[MAX_DATA_LENGTH];
-uint8_t incomingData[MAX_DATA_LENGTH];
+unsigned char output[MAX_DATA_LENGTH];
+unsigned char incomingData[MAX_DATA_LENGTH];
 
 // change the name of the port with the port name of your computer
 // must remember that the backslashes are essential so do not remove them
 //char* port = "\\\\.\\COM3";
 
 void portCommunicate(char* port) {
-    uint8_t data[] = { 01, 00, 00, 00, 01, 00 };
+    unsigned char data[] = { 0x01, 0x00, 0x00, 0x00, 0x01, 0x00 };
     Port stm(port);
     if (stm.isConnected()) {
         cout << "Connection made" << endl << endl;
