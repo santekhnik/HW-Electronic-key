@@ -50,6 +50,7 @@ void key_update(string strkey) {
 
 #define STM_WAIT_TIME 0
 #define MAX_DATA_LENGTH 255
+#define SEND_DATA_TO_STM 6
 
 #include <windows.h>
 #include <stdio.h>
@@ -83,8 +84,10 @@ Port::Port(char* portName)
         OPEN_EXISTING,
         FILE_ATTRIBUTE_NORMAL,
         NULL);
-    if (this->handler == INVALID_HANDLE_VALUE) {
-        if (GetLastError() == ERROR_FILE_NOT_FOUND) {
+    if (this->handler == INVALID_HANDLE_VALUE) 
+    {
+        if (GetLastError() == ERROR_FILE_NOT_FOUND) 
+        {
             printf("ERROR: Handle was not attached. Reason: %s not available\n", portName);
         }
         else
@@ -95,7 +98,8 @@ Port::Port(char* portName)
     else {
         DCB dcbSerialParameters = { 0 };
 
-        if (!GetCommState(this->handler, &dcbSerialParameters)) {
+        if (!GetCommState(this->handler, &dcbSerialParameters)) 
+        {
             printf("failed to get current serial parameters");
         }
         else {
@@ -120,7 +124,8 @@ Port::Port(char* portName)
 
 Port::~Port()
 {
-    if (this->connected) {
+    if (this->connected) 
+    {
         this->connected = false;
         CloseHandle(this->handler);
     }
@@ -133,7 +138,8 @@ int Port::readSerialPort(uint8_t buffer[], unsigned int buf_size)
 
     ClearCommError(this->handler, &this->errors, &this->status);
 
-    if (this->status.cbInQue > 0) {
+    if (this->status.cbInQue > 0) 
+    {
         if (this->status.cbInQue > buf_size) {
             toRead = buf_size;
         }
@@ -149,7 +155,8 @@ bool Port::writeSerialPort(unsigned char buffer[], unsigned int buf_size)
 {
     DWORD bytesSend;
 
-    if (!WriteFile(this->handler, (void*)buffer, buf_size, &bytesSend, 0)) {
+    if (!WriteFile(this->handler, (void*)buffer, buf_size, &bytesSend, 0)) 
+    {
         ClearCommError(this->handler, &this->errors, &this->status);
         return false;
     }
@@ -170,29 +177,28 @@ uint8_t incomingData[MAX_DATA_LENGTH];
 // must remember that the backslashes are essential so do not remove them
 //char* port = "\\\\.\\COM3";
 
-void portCommunicate(char* port) {
+void portCommunicate(char* port) 
+{
     unsigned char data[] = { 0x01, 0x00, 0x00, 0x00, 0x01, 0x00 };
     Port stm(port);
-    if (stm.isConnected()) {
+    if (stm.isConnected()) 
+    {
         cout << "\nConnection made" << endl << endl;
     }
     else {
         cout << "\nError in port name" << endl << endl;
     }
-    if (stm.isConnected()) {
+    if (stm.isConnected()) 
+    {
 
-    
-
-        stm.writeSerialPort(data, MAX_DATA_LENGTH);
+        stm.writeSerialPort(data, SEND_DATA_TO_STM);
         stm.readSerialPort(output, MAX_DATA_LENGTH);
 
         for (int i = 0; i < (sizeof(output) / sizeof(output[0])); i++) {
             printf("%d ", output[i]);
-            //free( output);
+            
 
         }
-         
-        //delete[] charArray;
     }
 }
 
