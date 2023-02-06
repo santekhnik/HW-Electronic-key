@@ -5,6 +5,9 @@
 #include <string>
 using namespace std;
 
+
+
+
 void hello() {
 	cout << "Hello World";
 }
@@ -138,7 +141,7 @@ int Port::readSerialPort(uint8_t buffer[], unsigned int buf_size)
     }
 
     if (ReadFile(this->handler, buffer, toRead, &bytesRead, NULL)) return bytesRead;
-
+    delete[] buffer;
     return 0;
 }
 
@@ -160,8 +163,8 @@ bool Port::isConnected()
 ////////////////////
 
 
-unsigned char output[MAX_DATA_LENGTH];
-unsigned char incomingData[MAX_DATA_LENGTH];
+uint8_t output[MAX_DATA_LENGTH];
+uint8_t incomingData[MAX_DATA_LENGTH];
 
 // change the name of the port with the port name of your computer
 // must remember that the backslashes are essential so do not remove them
@@ -183,9 +186,14 @@ void portCommunicate(char* port) {
         stm.writeSerialPort(data, MAX_DATA_LENGTH);
         stm.readSerialPort(output, MAX_DATA_LENGTH);
 
-        cout << ">> " << output << endl;
+        for (int i = 0; i < (sizeof(output) / sizeof(output[0])); i++) {
+            printf("%d ", output[i]);
+        }
+            
 
-       // delete[] charArray;
+        //cout << ">> " << output << endl;
+
+        //delete[] charArray;
     }
 }
 
