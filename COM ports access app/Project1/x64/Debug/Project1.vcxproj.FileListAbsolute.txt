@@ -4,3 +4,7 @@ D:\cpp\COM ports access app\Project1\x64\Debug\Project1.vcxproj.GenerateResource
 C:\Users\Aleksandr\Documents\GitHub\HW-Electronic-key\COM ports access app\Project1\x64\Debug\Project1.vcxproj.AssemblyReference.cache
 C:\Users\Aleksandr\Documents\GitHub\HW-Electronic-key\COM ports access app\Project1\x64\Debug\Project1.MyForm.resources
 C:\Users\Aleksandr\Documents\GitHub\HW-Electronic-key\COM ports access app\Project1\x64\Debug\Project1.vcxproj.GenerateResource.cache
+E:\Practic\EMBEDDED\COM ports access app\Project1\x64\Debug\Project1.vcxproj.AssemblyReference.cache
+E:\Practic\EMBEDDED\COM ports access app\Project1\x64\Debug\Project1.vcxproj.SuggestedBindingRedirects.cache
+E:\Practic\EMBEDDED\COM ports access app\Project1\x64\Debug\Project1.MyForm.resources
+E:\Practic\EMBEDDED\COM ports access app\Project1\x64\Debug\Project1.vcxproj.GenerateResource.cache

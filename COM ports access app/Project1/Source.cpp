@@ -163,7 +163,7 @@ bool Port::isConnected()
 ////////////////////
 
 
-uint8_t output[MAX_DATA_LENGTH];
+uint8_t output[8];
 uint8_t incomingData[MAX_DATA_LENGTH];
 
 // change the name of the port with the port name of your computer
@@ -174,10 +174,10 @@ void portCommunicate(char* port) {
     unsigned char data[] = { 0x01, 0x00, 0x00, 0x00, 0x01, 0x00 };
     Port stm(port);
     if (stm.isConnected()) {
-        cout << "Connection made" << endl << endl;
+        cout << "\nConnection made" << endl << endl;
     }
     else {
-        cout << "Error in port name" << endl << endl;
+        cout << "\nError in port name" << endl << endl;
     }
     if (stm.isConnected()) {
 
@@ -188,11 +188,10 @@ void portCommunicate(char* port) {
 
         for (int i = 0; i < (sizeof(output) / sizeof(output[0])); i++) {
             printf("%d ", output[i]);
+            //free( output);
+
         }
-            
-
-        //cout << ">> " << output << endl;
-
+         
         //delete[] charArray;
     }
 }
