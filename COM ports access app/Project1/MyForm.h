@@ -3,6 +3,11 @@
 
 void hello();
 void portCommunicate(char* port);
+void stm_cmd_2(char* port);
+void stm_cmd_3(char* port);
+void stm_cmd_4(char* port);
+void stm_cmd_5(char* port);
+
 //void key_update(string key);
 
 namespace Project1 {
@@ -71,6 +76,10 @@ namespace Project1 {
 	private: System::Windows::Forms::TextBox^ textBox3;
 	private: System::Windows::Forms::Button^ button6;
 	private: System::Windows::Forms::Button^ button9;
+	private: System::Windows::Forms::Button^ button10;
+	private: System::Windows::Forms::Button^ button11;
+	private: System::Windows::Forms::Button^ button12;
+	private: System::Windows::Forms::Button^ button13;
 
 	private: System::ComponentModel::IContainer^ components;
 	protected:
@@ -110,16 +119,20 @@ namespace Project1 {
 			this->textBox3 = (gcnew System::Windows::Forms::TextBox());
 			this->button6 = (gcnew System::Windows::Forms::Button());
 			this->button9 = (gcnew System::Windows::Forms::Button());
+			this->button10 = (gcnew System::Windows::Forms::Button());
+			this->button11 = (gcnew System::Windows::Forms::Button());
+			this->button12 = (gcnew System::Windows::Forms::Button());
+			this->button13 = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// comboBox1
 			// 
 			this->comboBox1->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->comboBox1->FormattingEnabled = true;
-			this->comboBox1->Location = System::Drawing::Point(308, 24);
-			this->comboBox1->Margin = System::Windows::Forms::Padding(2);
+			this->comboBox1->Location = System::Drawing::Point(411, 30);
+			this->comboBox1->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->comboBox1->Name = L"comboBox1";
-			this->comboBox1->Size = System::Drawing::Size(92, 21);
+			this->comboBox1->Size = System::Drawing::Size(121, 24);
 			this->comboBox1->TabIndex = 0;
 			// 
 			// comboBox2
@@ -130,30 +143,28 @@ namespace Project1 {
 				L"4800", L"9600", L"14400", L"19200", L"38400",
 					L"57600"
 			});
-			this->comboBox2->Location = System::Drawing::Point(308, 66);
-			this->comboBox2->Margin = System::Windows::Forms::Padding(2);
+			this->comboBox2->Location = System::Drawing::Point(411, 81);
+			this->comboBox2->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->comboBox2->Name = L"comboBox2";
-			this->comboBox2->Size = System::Drawing::Size(92, 21);
+			this->comboBox2->Size = System::Drawing::Size(121, 24);
 			this->comboBox2->TabIndex = 1;
 			this->comboBox2->SelectedIndexChanged += gcnew System::EventHandler(this, &MyForm::comboBox2_SelectedIndexChanged);
 			// 
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(246, 26);
-			this->label1->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->label1->Location = System::Drawing::Point(328, 32);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(58, 13);
+			this->label1->Size = System::Drawing::Size(71, 16);
 			this->label1->TabIndex = 2;
 			this->label1->Text = L"COM Ports";
 			// 
 			// label2
 			// 
 			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(247, 68);
-			this->label2->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->label2->Location = System::Drawing::Point(329, 84);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(58, 13);
+			this->label2->Size = System::Drawing::Size(71, 16);
 			this->label2->TabIndex = 3;
 			this->label2->Text = L"Baud Rate";
 			// 
@@ -161,10 +172,10 @@ namespace Project1 {
 			// 
 			this->button1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->button1->Location = System::Drawing::Point(264, 127);
-			this->button1->Margin = System::Windows::Forms::Padding(2);
+			this->button1->Location = System::Drawing::Point(352, 156);
+			this->button1->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(58, 33);
+			this->button1->Size = System::Drawing::Size(77, 41);
 			this->button1->TabIndex = 4;
 			this->button1->Text = L"Init port";
 			this->button1->UseVisualStyleBackColor = true;
@@ -172,10 +183,10 @@ namespace Project1 {
 			// 
 			// button2
 			// 
-			this->button2->Location = System::Drawing::Point(337, 126);
-			this->button2->Margin = System::Windows::Forms::Padding(2);
+			this->button2->Location = System::Drawing::Point(449, 155);
+			this->button2->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button2->Name = L"button2";
-			this->button2->Size = System::Drawing::Size(62, 34);
+			this->button2->Size = System::Drawing::Size(83, 42);
 			this->button2->TabIndex = 5;
 			this->button2->Text = L"Close port";
 			this->button2->UseVisualStyleBackColor = true;
@@ -183,49 +194,49 @@ namespace Project1 {
 			// textBox1
 			// 
 			this->textBox1->Enabled = false;
-			this->textBox1->Location = System::Drawing::Point(44, 24);
-			this->textBox1->Margin = System::Windows::Forms::Padding(2);
+			this->textBox1->Location = System::Drawing::Point(59, 30);
+			this->textBox1->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox1->Name = L"textBox1";
 			this->textBox1->ReadOnly = true;
-			this->textBox1->Size = System::Drawing::Size(130, 20);
+			this->textBox1->Size = System::Drawing::Size(172, 22);
 			this->textBox1->TabIndex = 6;
 			this->textBox1->Text = L"Recieve";
 			// 
 			// textBox2
 			// 
-			this->textBox2->Location = System::Drawing::Point(44, 63);
-			this->textBox2->Margin = System::Windows::Forms::Padding(2);
+			this->textBox2->Location = System::Drawing::Point(59, 78);
+			this->textBox2->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox2->Name = L"textBox2";
-			this->textBox2->Size = System::Drawing::Size(130, 20);
+			this->textBox2->Size = System::Drawing::Size(172, 22);
 			this->textBox2->TabIndex = 7;
 			this->textBox2->Text = L"Enter";
 			// 
 			// button3
 			// 
-			this->button3->Location = System::Drawing::Point(51, 104);
-			this->button3->Margin = System::Windows::Forms::Padding(2);
+			this->button3->Location = System::Drawing::Point(68, 128);
+			this->button3->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button3->Name = L"button3";
-			this->button3->Size = System::Drawing::Size(56, 19);
+			this->button3->Size = System::Drawing::Size(75, 23);
 			this->button3->TabIndex = 8;
 			this->button3->Text = L"Send";
 			this->button3->UseVisualStyleBackColor = true;
 			// 
 			// button4
 			// 
-			this->button4->Location = System::Drawing::Point(117, 104);
-			this->button4->Margin = System::Windows::Forms::Padding(2);
+			this->button4->Location = System::Drawing::Point(156, 128);
+			this->button4->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button4->Name = L"button4";
-			this->button4->Size = System::Drawing::Size(56, 19);
+			this->button4->Size = System::Drawing::Size(75, 23);
 			this->button4->TabIndex = 9;
 			this->button4->Text = L"Read";
 			this->button4->UseVisualStyleBackColor = true;
 			// 
 			// progressBar1
 			// 
-			this->progressBar1->Location = System::Drawing::Point(9, 155);
-			this->progressBar1->Margin = System::Windows::Forms::Padding(2);
+			this->progressBar1->Location = System::Drawing::Point(12, 191);
+			this->progressBar1->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->progressBar1->Name = L"progressBar1";
-			this->progressBar1->Size = System::Drawing::Size(196, 19);
+			this->progressBar1->Size = System::Drawing::Size(261, 23);
 			this->progressBar1->TabIndex = 10;
 			// 
 			// label3
@@ -233,19 +244,18 @@ namespace Project1 {
 			this->label3->AutoSize = true;
 			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Italic)),
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
-			this->label3->Location = System::Drawing::Point(9, 136);
-			this->label3->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->label3->Location = System::Drawing::Point(12, 167);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(68, 13);
+			this->label3->Size = System::Drawing::Size(80, 16);
 			this->label3->TabIndex = 11;
 			this->label3->Text = L"Port status";
 			// 
 			// button5
 			// 
-			this->button5->Location = System::Drawing::Point(209, 155);
-			this->button5->Margin = System::Windows::Forms::Padding(2);
+			this->button5->Location = System::Drawing::Point(279, 191);
+			this->button5->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button5->Name = L"button5";
-			this->button5->Size = System::Drawing::Size(43, 19);
+			this->button5->Size = System::Drawing::Size(57, 23);
 			this->button5->TabIndex = 12;
 			this->button5->Text = L"+10";
 			this->button5->UseVisualStyleBackColor = true;
@@ -254,10 +264,9 @@ namespace Project1 {
 			// label4
 			// 
 			this->label4->AutoSize = true;
-			this->label4->Location = System::Drawing::Point(200, 139);
-			this->label4->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->label4->Location = System::Drawing::Point(267, 171);
 			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(61, 13);
+			this->label4->Size = System::Drawing::Size(73, 16);
 			this->label4->TabIndex = 13;
 			this->label4->Text = L"Test button";
 			// 
@@ -265,10 +274,10 @@ namespace Project1 {
 			// 
 			this->button7->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->button7->Location = System::Drawing::Point(253, 254);
-			this->button7->Margin = System::Windows::Forms::Padding(2);
+			this->button7->Location = System::Drawing::Point(337, 313);
+			this->button7->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button7->Name = L"button7";
-			this->button7->Size = System::Drawing::Size(69, 33);
+			this->button7->Size = System::Drawing::Size(92, 41);
 			this->button7->TabIndex = 15;
 			this->button7->Text = L"Cancel";
 			this->button7->UseVisualStyleBackColor = true;
@@ -278,10 +287,10 @@ namespace Project1 {
 			// 
 			this->button8->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->button8->Location = System::Drawing::Point(327, 255);
-			this->button8->Margin = System::Windows::Forms::Padding(2);
+			this->button8->Location = System::Drawing::Point(436, 314);
+			this->button8->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button8->Name = L"button8";
-			this->button8->Size = System::Drawing::Size(73, 33);
+			this->button8->Size = System::Drawing::Size(97, 41);
 			this->button8->TabIndex = 16;
 			this->button8->Text = L"Reset key";
 			this->button8->UseVisualStyleBackColor = true;
@@ -290,18 +299,19 @@ namespace Project1 {
 			// label5
 			// 
 			this->label5->AutoSize = true;
-			this->label5->Location = System::Drawing::Point(13, 237);
+			this->label5->Location = System::Drawing::Point(17, 292);
+			this->label5->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(94, 13);
+			this->label5->Size = System::Drawing::Size(119, 16);
 			this->label5->TabIndex = 17;
 			this->label5->Text = L"Keys management";
 			// 
 			// textBox3
 			// 
-			this->textBox3->Location = System::Drawing::Point(122, 230);
-			this->textBox3->Margin = System::Windows::Forms::Padding(2);
+			this->textBox3->Location = System::Drawing::Point(163, 283);
+			this->textBox3->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox3->Name = L"textBox3";
-			this->textBox3->Size = System::Drawing::Size(278, 20);
+			this->textBox3->Size = System::Drawing::Size(369, 22);
 			this->textBox3->TabIndex = 18;
 			this->textBox3->Text = L"Enter key";
 			// 
@@ -309,10 +319,10 @@ namespace Project1 {
 			// 
 			this->button6->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->button6->Location = System::Drawing::Point(122, 254);
-			this->button6->Margin = System::Windows::Forms::Padding(2);
+			this->button6->Location = System::Drawing::Point(163, 313);
+			this->button6->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button6->Name = L"button6";
-			this->button6->Size = System::Drawing::Size(83, 33);
+			this->button6->Size = System::Drawing::Size(111, 41);
 			this->button6->TabIndex = 19;
 			this->button6->Text = L"Update";
 			this->button6->UseVisualStyleBackColor = true;
@@ -320,20 +330,64 @@ namespace Project1 {
 			// 
 			// button9
 			// 
-			this->button9->Location = System::Drawing::Point(9, 178);
-			this->button9->Margin = System::Windows::Forms::Padding(2);
+			this->button9->Location = System::Drawing::Point(12, 219);
+			this->button9->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button9->Name = L"button9";
-			this->button9->Size = System::Drawing::Size(142, 19);
+			this->button9->Size = System::Drawing::Size(189, 23);
 			this->button9->TabIndex = 20;
 			this->button9->Text = L"Check connection";
 			this->button9->UseVisualStyleBackColor = true;
 			this->button9->Click += gcnew System::EventHandler(this, &MyForm::button9_Click);
 			// 
+			// button10
+			// 
+			this->button10->Location = System::Drawing::Point(207, 219);
+			this->button10->Name = L"button10";
+			this->button10->Size = System::Drawing::Size(94, 23);
+			this->button10->TabIndex = 21;
+			this->button10->Text = L"KEY number";
+			this->button10->UseVisualStyleBackColor = true;
+			this->button10->Click += gcnew System::EventHandler(this, &MyForm::button10_Click);
+			// 
+			// button11
+			// 
+			this->button11->Location = System::Drawing::Point(307, 219);
+			this->button11->Name = L"button11";
+			this->button11->Size = System::Drawing::Size(75, 23);
+			this->button11->TabIndex = 22;
+			this->button11->Text = L"KEY ID";
+			this->button11->UseVisualStyleBackColor = true;
+			this->button11->Click += gcnew System::EventHandler(this, &MyForm::button11_Click);
+			// 
+			// button12
+			// 
+			this->button12->Location = System::Drawing::Point(388, 219);
+			this->button12->Name = L"button12";
+			this->button12->Size = System::Drawing::Size(63, 23);
+			this->button12->TabIndex = 23;
+			this->button12->Text = L"Encrypt";
+			this->button12->UseVisualStyleBackColor = true;
+			this->button12->Click += gcnew System::EventHandler(this, &MyForm::button12_Click);
+			// 
+			// button13
+			// 
+			this->button13->Location = System::Drawing::Point(456, 219);
+			this->button13->Name = L"button13";
+			this->button13->Size = System::Drawing::Size(75, 23);
+			this->button13->TabIndex = 24;
+			this->button13->Text = L"Decrypt";
+			this->button13->UseVisualStyleBackColor = true;
+			this->button13->Click += gcnew System::EventHandler(this, &MyForm::button13_Click);
+			// 
 			// MyForm
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(407, 299);
+			this->ClientSize = System::Drawing::Size(543, 368);
+			this->Controls->Add(this->button13);
+			this->Controls->Add(this->button12);
+			this->Controls->Add(this->button11);
+			this->Controls->Add(this->button10);
 			this->Controls->Add(this->button9);
 			this->Controls->Add(this->button6);
 			this->Controls->Add(this->textBox3);
@@ -354,7 +408,7 @@ namespace Project1 {
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->comboBox2);
 			this->Controls->Add(this->comboBox1);
-			this->Margin = System::Windows::Forms::Padding(2);
+			this->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->Name = L"MyForm";
 			this->Text = L" ";
 			this->ResumeLayout(false);
@@ -557,5 +611,18 @@ private: System::Void button9_Click(System::Object^ sender, System::EventArgs^ e
 	portCommunicate("\\\\.\\COM6");
 }
 
+private: System::Void button11_Click(System::Object^ sender, System::EventArgs^ e) {
+	stm_cmd_3("\\\\.\\COM6");
+}
+private: System::Void button10_Click(System::Object^ sender, System::EventArgs^ e) {
+	stm_cmd_2("\\\\.\\COM6");
+}
+private: System::Void button12_Click(System::Object^ sender, System::EventArgs^ e) {
+	stm_cmd_4("\\\\.\\COM6");
+}
+private: System::Void button13_Click(System::Object^ sender, System::EventArgs^ e) {
+	 stm_cmd_5("\\\\.\\COM6");
+
+}
 };
 }

@@ -22,6 +22,8 @@ uint8_t  flag_check_sum = 0x01;
 #define STM_WAIT_TIME 0
 #define MAX_DATA_LENGTH 255
 #define SEND_DATA_TO_STM 6
+#define RECEIVED_DATA_FROM_STM 8
+
 
 uint8_t output[8];
 uint8_t incomingData[MAX_DATA_LENGTH];
@@ -217,6 +219,8 @@ bool Port::isConnected()
 void portCommunicate(char* port) 
 {
     unsigned char data[] = { 0x01, 0x00, 0x00, 0x00, 0x01, 0x00 };
+    unsigned char MSG_cmd1[] = { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00 };
+
     Port stm(port);
     if (stm.isConnected()) 
     {
@@ -231,9 +235,122 @@ void portCommunicate(char* port)
         stm.writeSerialPort(data, SEND_DATA_TO_STM);
         stm.readSerialPort(output, MAX_DATA_LENGTH);
 
-        for (int i = 0; i < (MAX_DATA_LENGTH); i++) {
-            printf("%d ", output[i]);
+        for (int i = 0; i < (sizeof(output)); i++)
+        {
+            printf("%d ", MSG_cmd1[i]);
             
+
+        }
+    }
+}
+
+void stm_cmd_2(char* port)
+{
+    unsigned char data[] = { 0x02, 0x00, 0x00, 0x00, 0x01, 0x01 };
+    unsigned char MSG_cmd1[] = { 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01 };
+
+    Port stm(port);
+    if (stm.isConnected())
+    {
+        cout << "Key number:" << endl << endl;
+    }
+    else {
+        cout << "\nError in port name" << endl << endl;
+    }
+    if (stm.isConnected())
+    {
+
+        stm.writeSerialPort(data, SEND_DATA_TO_STM);
+        stm.readSerialPort(output, MAX_DATA_LENGTH);
+
+        for (int i = 0; i < (sizeof(output)); i++)
+        {
+            printf("%d ", MSG_cmd1[i]);
+
+
+        }
+    }
+}
+
+void stm_cmd_3(char* port)
+{
+    unsigned char data[] = { 0x03, 0x00, 0x00, 0x00, 0x01, 0x02 };
+    unsigned char MSG_cmd1[] = { 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x02 };
+
+    Port stm(port);
+    if (stm.isConnected())
+    {
+        cout << "Key ID:" << endl << endl;
+    }
+    else {
+        cout << "\nError in port name" << endl << endl;
+    }
+    if (stm.isConnected())
+    {
+
+        stm.writeSerialPort(data, SEND_DATA_TO_STM);
+        stm.readSerialPort(output, MAX_DATA_LENGTH);
+
+        for (int i = 0; i < (sizeof(output)); i++)
+        {
+            printf("%d ", MSG_cmd1[i]);
+
+
+        }
+    }
+}
+
+void stm_cmd_4(char* port)
+{
+    unsigned char data[] = { 0x04, 0x00, 0x00, 0x00, 0x01, 0x03 };
+    unsigned char MSG_cmd1[] = { 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x03 };
+
+    Port stm(port);
+    if (stm.isConnected())
+    {
+        cout << "Encryption enable:" << endl << endl;
+    }
+    else {
+        cout << "\nEncryption enable" << endl << endl;
+    }
+    if (stm.isConnected())
+    {
+
+        stm.writeSerialPort(data, SEND_DATA_TO_STM);
+        stm.readSerialPort(output, MAX_DATA_LENGTH);
+
+        for (int i = 0; i < (sizeof(output)); i++)
+        {
+            printf("%d ", MSG_cmd1[i]);
+
+
+        }
+    }
+}
+
+void stm_cmd_5(char* port)
+{
+    unsigned char data[] = { 0x04, 0x00, 0x00, 0x00, 0x01, 0x03 };
+    unsigned char MSG_cmd1[] = { 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x03 };
+
+    Port stm(port);
+    if (stm.isConnected())
+    {
+        cout << "Decryption enable:" << endl << endl;
+    }
+    else {
+        cout << "\nDecryption enable" << endl << endl;
+    }
+    if (stm.isConnected())
+    {
+
+        stm.writeSerialPort(data, SEND_DATA_TO_STM);
+        stm.readSerialPort(output, MAX_DATA_LENGTH);
+
+        for (int i = 0; i < (sizeof(output)); i++)
+        {
+            printf("%d ", MSG_cmd1[i]);
+
 
         }
     }
