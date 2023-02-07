@@ -3,16 +3,25 @@
 #include <fstream>
 #include <ctime>
 #include <string>
+#include <windows.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 using namespace std;
 
+uint8_t  check_sum;
+uint8_t  flag_check_sum = 0x01;
 
+#ifndef SERIALPORT_H
+#define SERIALPORT_H
+#define STM_WAIT_TIME 0
+#define MAX_DATA_LENGTH 255
+#define SEND_DATA_TO_STM 6
 
+//---------[  Function for get KEY number  ]---------
 
-void hello() {
-	cout << "Hello World";
-}
-
-void get_key_number(string strkey) {
+void get_key_number(string strkey) 
+{
 	ifstream file("D:\\cpp\\keys.txt");
 	if (!file.is_open())
 		cout << "Error, the file with keys doesn't seem to exist!";
@@ -22,7 +31,9 @@ void get_key_number(string strkey) {
 	}
 }
 
-void key_update(string strkey) {
+//---------[  Function for KEY update  ]---------
+void key_update(string strkey) 
+{
 	int key = stoi(strkey);
 	int step, act;
 	srand(time(NULL));
@@ -44,18 +55,41 @@ void key_update(string strkey) {
 	file.close();
 }
 
-/// /////////////////////////////////////////////////////////////////
-#ifndef SERIALPORT_H
-#define SERIALPORT_H
+//---------[  Function to count CRC  ]---------
+void crc()
+{
+    check_sum = output[0];
 
-#define STM_WAIT_TIME 0
-#define MAX_DATA_LENGTH 255
-#define SEND_DATA_TO_STM 6
+    for (int i = 0; i < 5; i++)
+    {
+        if (output[i] == output[i + 1])
+        {
+            check_sum = check_sum;
+        }
+        else
+        {
+            check_sum = check_sum - 1;
+        }
+    }
+    check_sum = check_sum + 1;
+}
 
-#include <windows.h>
-#include <stdio.h>
-#include <stdlib.h>
+//---------[  Function to check for errors on the receiver side  ]---------
+void receiver()
+{
+    crc();
 
+    if (check_sum == output[5])
+    {
+        flag_check_sum = 0x00;
+    }
+    else
+    {
+        flag_check_sum = 0x01;
+    }
+}
+
+//---------[  Define classes for PORT access  ]---------
 class Port
 {
 private:
@@ -71,8 +105,8 @@ public:
     bool writeSerialPort(uint8_t buffer[], unsigned int buf_size);
     bool isConnected();
 };
-
 #endif
+
 Port::Port(char* portName)
 {
     this->connected = false;
@@ -167,8 +201,6 @@ bool Port::isConnected()
 {
     return this->connected;
 }
-////////////////////
-
 
 uint8_t output[8];
 uint8_t incomingData[MAX_DATA_LENGTH];
@@ -201,12 +233,3 @@ void portCommunicate(char* port)
         }
     }
 }
-
-/*#include <iostream>
-
-
-using namespace std;
-
-int get_number;
-
-*/
