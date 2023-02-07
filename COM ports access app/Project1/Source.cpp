@@ -9,6 +9,11 @@
 
 using namespace std;
 
+void hello() 
+{
+    cout << "Hello World";
+}
+
 uint8_t  check_sum;
 uint8_t  flag_check_sum = 0x01;
 
@@ -17,6 +22,9 @@ uint8_t  flag_check_sum = 0x01;
 #define STM_WAIT_TIME 0
 #define MAX_DATA_LENGTH 255
 #define SEND_DATA_TO_STM 6
+
+uint8_t output[8];
+uint8_t incomingData[MAX_DATA_LENGTH];
 
 //---------[  Function for get KEY number  ]---------
 
@@ -202,9 +210,6 @@ bool Port::isConnected()
     return this->connected;
 }
 
-uint8_t output[8];
-uint8_t incomingData[MAX_DATA_LENGTH];
-
 // change the name of the port with the port name of your computer
 // must remember that the backslashes are essential so do not remove them
 //char* port = "\\\\.\\COM3";
@@ -226,7 +231,7 @@ void portCommunicate(char* port)
         stm.writeSerialPort(data, SEND_DATA_TO_STM);
         stm.readSerialPort(output, MAX_DATA_LENGTH);
 
-        for (int i = 0; i < (sizeof(output) / sizeof(output[0])); i++) {
+        for (int i = 0; i < (MAX_DATA_LENGTH); i++) {
             printf("%d ", output[i]);
             
 
