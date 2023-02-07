@@ -1,6 +1,1 @@
-﻿  MyForm.cpp
-  Source.cpp
-E:\Practic\EMBEDDED\COM ports access app\Project1\Source.cpp(49,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  Generating Code...
-  MyForm.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
-  Project1.vcxproj -> E:\Practic\EMBEDDED\COM ports access app\x64\Debug\Project1.exe
+﻿  Project1.vcxproj -> E:\Practic\EMBEDDED\COM ports access app\x64\Debug\Project1.exe

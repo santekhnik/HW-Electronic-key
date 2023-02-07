@@ -9,6 +9,75 @@
 
 using namespace std;
 
+class encdec{
+    int key;
+
+// File name to be encrypt
+string file = "file_test.txt";
+char c;
+
+public:
+    void encrypt();
+    void decrypt();
+};
+
+// Definition of encryption function
+void encdec::encrypt()
+{
+    // Key to be used for encryption
+    cout << "key: ";
+    cin >> key;
+
+    // Input stream
+    fstream fin, fout;
+
+    // Open input file
+    // ios::binary- reading file
+    // character by character
+    fin.open(file, fstream::in);
+    fout.open("encrypt.txt", fstream::out);
+
+    // Reading original file till
+    // end of file
+    while (fin >> noskipws >> c) {
+        int temp = (c + key);
+
+        // Write temp as char in
+        // output file
+        fout << (char)temp;
+    }
+
+    // Closing both files
+    fin.close();
+    fout.close();
+}
+
+// Definition of decryption function
+void encdec::decrypt()
+{
+    cout << "key: ";
+    cin >> key;
+    fstream fin;
+    fstream fout;
+    fin.open("encrypt.txt", fstream::in);
+    fout.open("decrypt.txt", fstream::out);
+
+    while (fin >> noskipws >> c) {
+
+        // Remove the key from the
+        // character
+        int temp = (c - key);
+        fout << (char)temp;
+    }
+
+    fin.close();
+    fout.close();
+}
+
+
+
+
+
 void hello() 
 {
     cout << "Hello World";
@@ -315,10 +384,11 @@ void stm_cmd_4(char* port)
     }
     if (stm.isConnected())
     {
-
+        encdec enc;
         stm.writeSerialPort(data, SEND_DATA_TO_STM);
         stm.readSerialPort(output, MAX_DATA_LENGTH);
 
+        enc.encrypt();
         for (int i = 0; i < (sizeof(output)); i++)
         {
             printf("%d ", MSG_cmd1[i]);
@@ -343,10 +413,10 @@ void stm_cmd_5(char* port)
     }
     if (stm.isConnected())
     {
-
+        encdec enc;
         stm.writeSerialPort(data, SEND_DATA_TO_STM);
         stm.readSerialPort(output, MAX_DATA_LENGTH);
-
+        enc.decrypt();
         for (int i = 0; i < (sizeof(output)); i++)
         {
             printf("%d ", MSG_cmd1[i]);
